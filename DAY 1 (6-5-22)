@@ -1,0 +1,45 @@
+1. Find the Duplicate Number
+ code:
+ class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        while(nums[0]!= nums[nums[0]]){
+            swap(nums[0], nums[nums[0]]);
+        }
+        return nums[0];
+    }
+};
+by Array as HashMap 
+tc o(n)
+sc o(1)
+
+2.Set Matrix Zeroes
+code:
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int row = matrix.size();
+         int col = matrix[0].size();
+        int col0 =1;   //intilise  1st cell as true if its depend on col nd row
+       
+        for(int i = 0 ;i<row;i++){
+            if(matrix[i][0]==0) col0=0; //if in 1st row hve 0 then make it false  
+         
+            for(int j = 0;j<col;j++)
+                if(matrix[i][j]==0)
+                matrix [i][0] = matrix[0][j] =0;
+           
+        //first filling the dummy array insinde the given matrix h 
+        } 
+          
+        for (int i = row-1,i>=0,i--){   //filling 0 in dumy row(1st)nd colm by seeing 0                                              // in between matrix
+            for (int j = col-1,j>=1,j--)
+                if(matrix [i][0]==0 || matrix[0][j] ==0)
+                    matrix[i][j] =0;
+                
+            if(col0==0)matrix[i][0]=0;
+            
+        }
+    }
+};   //tc 2*(n*m) traverse two time 
+     //sc o(1)
