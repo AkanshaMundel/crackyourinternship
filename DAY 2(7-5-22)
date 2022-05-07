@@ -1,0 +1,111 @@
+5. Move Zeroes
+code:
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int leftp =0;
+            int rightp =0;
+        for (int rightp =0;rightp <nums.size();rightp ++){
+            if(nums[rightp]!=0){
+                swap(nums[rightp],nums[leftp]);
+                leftp++;
+            }
+        }
+        //return nums;
+    }
+};
+approach : two pointer (move right pointr till find non zero element swap with left pointer 
+tc:o(n)
+sc:o(1)
+
+
+6.Best Time to Buy and Sell Stock
+code:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int mimeprice= INT_MAX;
+        int profit =0;
+        for (int i= 0;i<prices.size();i++){
+            mimeprice =min(mimeprice,prices[i]);
+            // if(prize[i]>mime){
+            int diff= prices[i]-mimeprice;
+             profit=max(profit,diff);
+        }
+        return profit;
+    }
+   approach:take mimprice nd start checking to right if exits highr value (max profit) acc to minprice'
+   tc: o(n)
+   sc:o(1)
+   
+   
+   
+  7.Two Sum
+ code:
+ class Solution {
+   public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int>ans;
+        unordered_map<int,int>mp;
+       for (int i = 0;i<nums.size();i++){
+           if(mp.find(target-nums[i])!= mp.end()){
+               ans.push_back(mp[target-nums[i]]);
+               ans.push_back(i);
+               return ans;
+               }
+           mp[nums[i]]=i;
+       }
+        return ans;
+    }
+};
+//approach :hash table for storing (num,index) if [target- pointr] is not prnt 
+//tc: o(n)
+//sc:O(n) for storing into hashtable
+
+
+8. Best Time to buy and sell stock
+code:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int profit = 0;
+        if(prices.size()==0) return 0;
+        for (int i = 0 ;i<prices.size();i++){
+            if(prices[i]<prices[i+1]){
+                profit += (prices[i+1]-prices[i]);
+            }
+        }return profit;
+    }
+};
+// tc :o(n)
+//     sc: o(1)
+
+approacch 2 by dynamic programming
+int f(int ind,int buy,vector<int> &prices,int n ,vector<vector<int>> &dp){
+    if(ind==n) return 0;
+    if(dp[ind][buy]!= -1)return dp[ind][buy];
+    int profit =0;
+    if(buy){
+        profit= max(-prices[ind]+f(ind+1,0,prices,n,dp), 
+                   0+f(ind+1,1,prices,n,dp));
+    }
+    else{
+        profit = max(prices[ind]+f(ind+1,1,prices,n,dp), 
+                   0+f(ind+1,0,prices,n,dp));
+    }
+    return dp[ind][buy]= profit;
+}
+
+
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+      int n = prices.size();
+        vector<vector<int>>dp(n,vector<int>(2,-1));
+        return f(0,1,prices,n,dp);
+    }
+};
+    // tc o(n*n)
+    // sc o(n*2)+o(2)
+    //memoisation
