@@ -13,7 +13,49 @@ by Array as HashMap
 tc o(n)
 sc o(1)
 
-2.Set Matrix Zeroes
+2. Sort Colors
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+       int low =0, mid = 0, r = nums.size()-1;
+    while (mid <= r) {
+        if (nums[mid] == 0) 
+            swap(nums[mid++], nums[low++]);
+        else if (nums[mid] == 2) 
+            swap(nums[mid], nums[r--]);
+        else
+            mid++;
+    }
+}
+};
+approach :binary search
+tc:
+sc:
+
+
+
+3.Remove Duplicates from Sorted Array
+code:
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if(nums.size()==0)
+            return 0;
+        int i= 0;
+        for(int j=1;j<nums.size();j++){
+            if(nums[j]!= nums[i]){
+                i++;
+                nums[i] =nums[j];
+                }
+        }return (i+1);
+    }
+};
+approach:two pointer 
+tc:
+sc:o(1)
+
+
+4.Set Matrix Zeroes
 code:
 class Solution {
 public:
@@ -27,12 +69,10 @@ public:
          
             for(int j = 0;j<col;j++)
                 if(matrix[i][j]==0)
-                matrix [i][0] = matrix[0][j] =0;
-           
-        //first filling the dummy array insinde the given matrix h 
+                matrix [i][0] = matrix[0][j] =0;     //first filling the dummy array insinde the given matrix h
         } 
           
-        for (int i = row-1,i>=0,i--){   //filling 0 in dumy row(1st)nd colm by seeing 0                                              // in between matrix
+        for (int i = row-1,i>=0,i--){   //filling 0 in dumy row(1st)nd colm by seeing 0 in between matrix
             for (int j = col-1,j>=1,j--)
                 if(matrix [i][0]==0 || matrix[0][j] ==0)
                     matrix[i][j] =0;
@@ -41,5 +81,7 @@ public:
             
         }
     }
-};   //tc 2*(n*m) traverse two time 
-     //sc o(1)
+};  
+approach: traverse in matrix by creating 1st row as dummy array
+tc: 2*(n*m) 
+ sc: o(1)
