@@ -1,0 +1,210 @@
+9.Subarray Sums Divisible by K
+code:
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+     unordered_map<int,int>mp; // map is storing rem with their frequency
+      int cnt =0,ssum =0;
+      for(int it :nums){
+          ssum+=it;
+             
+        int rem = 0;
+        rem = ssum%k;
+        if(rem<0)
+            rem+=k;
+        
+        if(rem==0)cnt++;
+        
+        if(mp.find(rem)!= mp.end()) // cheching if element present in map if yes then adding previous value in our ans
+            cnt +=mp[rem];
+          
+        mp[rem]++; ;// increase frequency of rem ehich we get now
+  
+      }
+        return cnt;
+    }
+};
+tc:o(n)
+approach : hashing 
+
+
+10. Find All Duplicates in an Array
+code:
+Time Complexcity - O(N)
+Space Complexcity - O(N)
+approach: unordered map
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        if(nums.empty())return {};
+        vector<int>ans;
+        unordered_map<int,int>mp;
+        for(int no:nums)mp[no]++;
+        for(auto it:mp)if(it.second==2)ans.push_back(it.first);
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> v;
+        if(nums.empty())return {};
+        for(int i=0;i<nums.size();i++)
+        {
+		    // first make the elements negative accordingly as mentioned below 
+			//suppose when we iterate through array we find an element 4 so make(4-1) =3rd element make it negative 
+			//and move forward in arr and 
+			//we again find 4 so we try to make (4-1)=3rd element negatve but it's already negative which means
+			// it has occured before so return 4 
+            int idx=abs(nums[i])-1;
+            if (nums[idx]>0)
+            nums[idx] =(-nums[idx]);
+            else 
+                v.push_back(abs(nums[i]));
+            
+        }
+    
+        return v;
+    }
+};
+approach just traversing making negative to check if it already visited or not
+
+
+
+11.Container With Most Water
+code:
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int n= height.size();
+        int ans= INT_MIN;
+        int start=0, end=n-1;
+        
+        while(start<end){
+            int area= min(height[start], height[end]) * (end-start);
+            ans = max(ans, area);
+            
+            if(height[start] > height[end])
+                end--;
+            else
+                start++;
+        }
+        
+        return ans;
+    }
+};
+TC: O(N)
+APPROACH :two pointer
+
+
+12.3Sum
+code:
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        
+        sort(nums.begin(),nums.end());
+         vector<vector<int>>ans;
+        int n =nums.size();
+        
+        for(int i = 0;i<nums.size()-2;i++){
+            if((i>0 &&nums[i]!= nums[i-1])||i==0){   //this for checking duplicacy for i thats for a
+            
+            int lo=i+1;int hi = n-1;
+            
+            while(lo<hi){    //starting two pointer apporah
+            int currsun = nums[i]+nums[lo]+nums[hi];//nums[lo]+nums[hi]==sum and sum = 0-nim[i]
+                if(currsun == 0){
+                    vector<int>temp;
+                    temp.push_back(nums[i]);
+                     temp.push_back(nums[lo]);
+                     temp.push_back(nums[hi]);
+                    ans.push_back(temp);
+                
+                 while(lo<hi&& nums[lo] ==nums[lo+1])lo++; //to avoid the dupliccate value while in finding two sum 
+                 while(lo<hi&& nums[hi] ==nums[hi-1])hi--;
+                 lo++;hi--;                    //this is for finally execute from non duplicate value 
+                }
+                   if(currsun<0){
+                    lo++;             
+                }
+                else
+                    hi--;
+          }
+        }   
+      }
+        return ans;
+    }
+};
+// tc:o(n^2)
+// sc:o(1~n)
+
+
+
+13.4Sum
+code:
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>>ans;
+        if(nums.empty())return ans;
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        
+        for(int i = 0 ;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                
+                int tar1 = target-(nums[i]+nums[j]); //finding remaining value
+                int lo = j+1;
+                int hi = n-1;          //starting two sum using twopointer approach
+                
+                while(lo<hi){
+                    int twosum =nums[lo]+nums[hi]; 
+                     if(tar1 ==twosum ){
+                         
+                         vector<int>temp(4,0);
+                         temp[0] =(nums[i]);
+                          temp[1]=(nums[j]);
+                          temp[2]=(nums[lo]);
+                          temp[3]=(nums[hi]);
+                         ans.push_back(temp);
+                            while(lo<hi&&nums[lo]==temp[2]) lo++;
+                          while(lo<hi&&nums[hi]==temp[3])hi--;
+                     }
+                    else if(twosum<tar1)lo++;
+                    else 
+                        hi--;
+                }
+                while(j+1<n && nums[j] ==nums[j+1]) j++; //avoiding duplicacy
+            }
+            while(i+1<n && nums[i] ==nums[i+1]) i++;
+        }
+        return ans;
+    }
+};
+// tc: O(n^3)
+// sc:o(1)
+// approach :converting through two sum 
+
+
+14.Majority Element
+code:
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+     int count=0;int element = 0;
+        for(int i = 0 ; i<nums.size();i++){
+            if(count==0)
+                element = nums[i];
+            if(nums[i]==element )count += 1;
+            else 
+                count -= 1;
+        }
+        return element;
+    }
+};
+// approach :moore voting algorithm
+// tc: o(n)
+// sc:o(1)
+
