@@ -1,0 +1,57 @@
+"STRINGS"
+_____________
+ Valid Parenthese
+ CODE:
+ class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
+        for(int i= 0;i<s.size();i++){
+            if(s[i] =='(' ||s[i] =='[' ||   s[i] =='{' ){
+                st.push(s[i]);
+            }  
+        
+            else if (!st.empty()){
+              if(s[i]==')' && st.top() == '(') 
+                 st.pop();
+              else if(s[i]==']' && st.top() == '[') 
+                 st.pop();
+               else if(s[i]=='}' && st.top() == '{') 
+                 st.pop();
+              else 
+                  return false;
+            }
+            else
+                return false;
+        }
+    if(!st.empty()) return false;
+    return true;
+                
+        
+    }
+};
+   // tc: o(n)
+   
+   ----------------------------------------------------------------------------------------------------------------------------
+   Remove all duplicates from a given string 
+   CODE:
+   class Solution{
+public:
+	string removeDuplicates(string str) {
+	    // code here
+	    unordered_map<char,int> mp;
+	    for (int i = 0;i <str.size();i++){
+	        mp[str[i]]++; cout<<mp;
+	        
+	    }
+	   for(auto it:mp)  {  //iterating through the unordered map
+          //if the count of characters is greater then 1 then duplicate found
+
+	    if(it.second>1)
+	     return it.first;}
+	}
+};
+
+-----
+or to print strig having no duplicate value
+code :
