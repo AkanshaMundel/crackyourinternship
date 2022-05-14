@@ -70,5 +70,33 @@ public:
 }
 };
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Implement strStr()
+code:
+#include<bits/stdc++.h>
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int n = haystack.size();
+        int m =  needle.size();
+       
+        if(needle.empty()) return 0;
+        if(m>n) return -1;
+        for(int i = 0;i<=n-m;i++){
+            int it;
+            for( it = 0;it<m;it++){
+                if( haystack[i+it]!= needle[it])
+                   break;
+            }
+                   if(it ==m)return i;
+        }return -1;
+    }
+};
+
+approach : two pointer approach : find needle in hackstack nd return the indx it start in hackstack
+
 
 
