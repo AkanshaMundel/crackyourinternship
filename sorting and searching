@@ -1,0 +1,490 @@
+EASY QUESTION 
+____
+Q1 Permutations in array
+CODE
+class Solution {
+  public:
+    bool isPossible(long long a[], long long b[], long long n, long long k) {
+        // Your code goes here=
+       sort(a,a+n);
+       sort(b,b+n,greater<int>());
+        for(int i = 0;i<n;i++){
+            if(a[i] +b[i] >= k)return true;
+            else
+            return false;
+        }
+    }
+};
+
+___________________________________________________________________________________________
+
+
+Q2 .Ceil The Floor 
+CODE
+  int ceil(int a[], int low, int high ,int x)
+{
+    
+    int mid = (low+high)/2;
+    if(x<=a[low]) return a[low];
+    if(x>a[high]) return -1;
+    if(x== a[mid]){
+      return mid;
+    }
+    else if(x>a[mid])
+    {
+        if(mid+1<=high && x <= a[mid + 1] )
+            return a[mid + 1] ;
+       
+         return  ceil(a,mid+1,high ,x );
+    }    
+    else if  (x<a[mid])
+    {   
+       if(mid-1>=low && x > a[mid -1] )
+         return a[mid] ;
+       else
+        return  ceil(a,low,mid-1 ,x );
+    }  
+}
+    
+    
+    
+    
+    
+    int floor(int a[], int low, int high ,int x)
+{
+     
+    int mid = (low+high)/2;
+    if(x>= a[high]) return a[high];
+    if(low>high) return -1;
+    if(x == a[mid])
+      return mid;
+    if(mid>0 && x >= a[mid -1] && x <a[mid] )
+            return a[mid-1];
+     if(x< a[mid])  
+       return  floor(a,low,mid-1 ,x );
+     else
+         return  floor(a,mid+1,high ,x );
+       
+      
+      
+}
+pair<int, int> getFloorAndCeil(int arr[], int n, int x) {
+    // code here
+    sort(arr,arr+n);
+    int ele = x;
+
+    int index = ceil(arr, 0, n-1, ele);
+     int index2 =floor(arr, 0, n-1, ele);
+     
+       pair<int, int > ans;
+     ans.first = index2;
+    ans.second = index; 
+    return ans;
+    
+}
+
+________________________________________________________________________________________________________________________________
+
+
+Q3 Find Pair Given Difference 
+CODE
+bool findPair(int arr[], int size, int n){
+    //code
+    sort(arr,arr+size);
+    int f =-1;
+    for(int i = 0;i<size;i++){
+     int ind = upper_bound(arr+i+1,arr+size,n+arr[i])-arr-1;
+     if(arr[ind]- arr[i]== n){
+         f=1;
+         break;
+     }
+    }
+}
+// binary search 
+//tc (nlogn)
+//sc O(1)
+
+_____________________________________________________________________________________________________________________________________________________________
+
+MEDIUM
+-------
+
+
+Q4  Find Peak Element
+CODE
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int n = nums.size();
+         int lo = 0;
+          int hi = n-1;
+          while (lo<hi){
+               int mid = lo +(hi-lo )/2;
+            if(nums[mid]< nums[mid+1])
+               lo= mid+1;
+             else 
+                 hi= mid;
+          }
+      
+        return lo;
+    }
+};
+//tc o(log n )
+
+________________________________________________________________________________________________________________________________________________________
+
+
+Q5 . Product of Array Except Self
+CODE
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+         vector<int> op;
+        int n = nums.size();
+        if(nums.size()<1) return op;
+        int prod = 1;
+        for(int i = 0; i<nums.size();i++){  // updating cumalitive left product [1,2,6,24]
+            prod *= nums[i];
+            op.push_back(prod);
+        }
+        prod = 1;  //making right side product
+        for(int i = n-1; i>0;i--){  // traverse frm ri8 to left nd update op
+                
+               op[i] = op[i-1]*prod;
+             prod *= nums[i];
+            
+        }op[0]= prod;
+        return op;
+        
+    }
+};
+//1st tc: o(n2) because travesing the array 
+// second app : take product = all ele the itrate the element for particular ele perform prod/arr[i];tc: o(n) sc (1)but here using division as //it 0 comes so we cant use it 
+//optimal app is for particular ele find its left nd ri8 product and travese nd fill the particular ith by left[i-1]*ri8[i+1] and add //boundaary caase as op[0] = ri8[1] and op[n-1]= left[n-2] tc :o(n) and sc: o(n)
+//again in o(1)
+// for that make output as left cumalittive sum and tempproduct = store prod*i from ending nd -- for every ith ele = left[i-1]*prod [prod = //store last ele tht travese]
+
+
+
+_______________________________________________________________________________________________________________________________________________________----
+
+
+Q6.Minimum Swaps to Sort 
+CODE
+class Solution 
+{
+    public:
+    //Function to find the minimum number of swaps required to sort the array. 
+	int minSwaps(vector<int>&nums)
+	{
+	    // Code here
+	    vector<pair<int,int>> v[nums.size()];
+	    for(int i = 0;i<nums.size();i++){
+	        v[i] = {nums[i],i};
+	    }
+	    sort(v.begin(),v.end());
+	    int c = 0;
+	    for(int i = 0;i<nums.size();i++){
+	        if(v[i].second==i) continue;
+	        else{
+	        c++;
+	          swap(v[i],v[v[i].second]);
+	          i--;
+	    }
+	}
+	return c;
+	}
+};
+// tc :nlogn 
+
+________________________________________________________________________________________________________________________________________________________________
+
+
+Q Check if reversing a sub array make the array sorted
+CODE
+Bool checkReverse(int arr[], int n)
+{
+    // Copying the array.
+    int temp[n];
+    for (int i = 0; i < n; i++)
+        temp[i] = arr[i];
+ 
+    // Sort the copied array.
+    sort(temp, temp + n);
+ 
+    // Finding the first mismatch.
+    int front;
+    for (front = 0; front < n; front++)
+        if (temp[front] != arr[front])
+            break;
+ 
+    // Finding the last mismatch.
+    int back;
+    for (back = n - 1; back >= 0; back--)
+        if (temp[back] != arr[back])
+            break;
+ 
+    // If whole array is sorted
+    if (front >= back)
+        return true;
+ 
+    // Checking subarray is decreasing or not.
+    do
+    {
+        front++;
+        if (arr[front - 1] < arr[front])
+            return false;
+    } while (front != back);
+ 
+    return true;
+}
+ 
+// Driven Program
+int main()
+{
+    int arr[] = { 1, 2, 5, 4, 3 };
+    int n = sizeof(arr)/sizeof(arr[0]);
+ 
+    checkReverse(arr, n)? (cout << "Yes" << endl):
+                          (cout << "No" << endl);
+    return 0;
+}
+
+________________________________________________________________________________________________________________________________________________________________________
+
+
+HARD---
+
+Q  Count of Smaller Numbers After Self
+CODE
+class Solution {
+public:
+    void merge(vector<int> &count, vector<pair<int, int> > &v, int left, int mid, int right) {
+        vector<pair<int, int> > tmp(right-left+1);
+        int i = left;
+        int j = mid+1;
+        int k = 0;
+
+        while (i <= mid && j <= right) {
+            // mind that we're sorting in descending order
+            if (v[i].first <= v[j].first) { 
+                tmp[k++] = v[j++];
+            }
+            else {
+                // only line responsible to update count, related to problem constraint, 
+                // remaining part is just regular mergeSort 
+                count[v[i].second] += right - j + 1;
+                tmp[k++] = v[i++];
+            }
+        }
+        while (i <= mid) {
+            tmp[k++] = v[i++];
+        }
+        while (j <= right) {
+            tmp[k++] = v[j++];
+        }
+        for (int i = left; i <= right; i++)
+            v[i] = tmp[i-left];
+    }        
+
+    void mergeSort(vector<int> &count, vector<pair<int, int> > &v, int left, int right) {
+        if (left >= right) 
+            return;
+
+        int mid = left + (right-left)/2;
+        mergeSort(count, v, left, mid);
+        mergeSort(count, v, mid+1, right);
+        merge(count, v, left, mid, right);
+    }
+
+    vector<int> countSmaller(vector<int>& nums) {
+        int N = nums.size();
+
+        vector<pair<int, int> > v(N);
+        for (int i = 0; i < N; i++)   
+            v[i] = make_pair(nums[i], i);
+
+        vector<int> count(N, 0);
+        // sorting in descending order
+        mergeSort(count, v, 0, N-1);
+
+        return count;
+    }
+    
+    
+    ___________________________________________________________________________________________________________________________________________________________
+    
+    
+    Q  Split Array Largest Sum
+    CODE
+    class Solution {
+public:
+    bool validsum(vector<int>& nums, int mid, int m,int n){
+        int total = 0;
+        int subarrcnt = 1;
+        for(int i = 0;i<n ;i++){
+            if(nums[i]>mid)return  false;
+            if(nums[i]+total<= mid){
+                total += nums[i];
+            }
+            else{   //(total>mid)
+                subarrcnt++;
+                total = nums[i];
+            } 
+        }
+       
+        return (subarrcnt<=m);
+    }
+    
+    
+    int splitArray(vector<int>& nums, int m) {
+        long n= nums.size();
+        int maxi = 0;int sum= 0;
+        int ans =0;
+        for(int i = 0;i<n;i++){
+            maxi= max(maxi,nums[i]);
+            sum = sum+nums[i];
+        }
+        int l = maxi;
+        int h = sum;
+        while(l<= h){
+            int mid_sum =l+(h-l)/2;
+            if(validsum(nums,mid_sum,m,n)){
+                ans = mid_sum;
+                h = mid_sum-1;}
+             else{
+                l= mid_sum +1;}
+        }
+        return ans;
+    }
+};
+//approach bs
+//tc o(nlong n)
+    
+    ___________________________________________________________________________________________________________________________________________________________
+    
+    Q. Search in Rotated Sorted Array
+    CODE
+    class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int lo= 0;
+        int hi = nums.size()-1;
+        while (lo<=hi){
+            int mid = lo+(hi-lo)/2;
+            if(target == nums[mid]) return mid;
+            
+            if(nums[lo]<=nums[mid]  ){
+                if(target>=nums[lo] && target<= nums[mid])
+                    hi = mid-1;
+                 else
+                     lo = mid+1;}
+            else{
+                if(target>=nums[mid] && target<= nums[hi])
+                     lo = mid+1;
+                 else
+                     hi = mid-1;}
+        }        
+     return -1;
+    }
+};
+
+__________________________________________________________________________________________________________________________________________________________________
+
+
+
+Q Allocate minimum number of pages
+CODE
+class Solution 
+{
+    public:
+    //Function to find minimum number of pages.
+    bool isvalid(int a[],int nobok,int nostut ,int max){
+        int student =1; int sum =0 ;
+        for(int i = 0 ; i<nobok; i++){
+            if(a[i]>max)return false;
+            sum += a[i];
+            
+            if(sum >max){
+                student++;
+                sum = a[i];
+            }
+           
+        }
+        
+        if(student >nostut) return false;
+        return true;
+    }
+    int findPages(int A[], int N, int M) 
+    {
+        //code here
+     int sum = 0;
+     int maxi = INT_MAX;
+     for(int i = 0;i<N;i++ ){
+         sum = sum +A[i];
+         maxi = max(A[i],maxi);
+     }
+     int res =-1;
+      if(N<M) return -1;
+     int lo= maxi;
+    int  hi = sum;
+     while(lo<=hi){
+          
+         int mid = lo +(hi-lo)/2;
+         if(isvalid(A,N,M,mid) == true){
+             res = mid;
+             hi= mid-1;
+         }
+         else
+         lo= mid+1;
+     }
+     return res;
+    }
+};
+
+
+________________________________________________________________________________________________________________________________________________
+
+
+Q.Aggressive cow
+CODE.#include <iostream>
+using namespace std;
+
+int main() {
+	// your code goes here
+	bool cowcanplaced(inr arr[], int n ,int cow,int maxdist){
+		int coord = arr[0];int cnt=1;
+		for(int i = 0 ;i<n;i++){
+			if((arr[i]-coord)>=maxdist){   //if dist is feasible two cow have alteast distance the cnt for cow increase nd now coord is chnge 
+			 cnt++
+			 coord= arr[i];
+			}
+			if(cnt == cow )return true;
+			
+		}
+		return false;
+	}
+	
+	
+	int t;
+	cin << t;
+	while(t--){
+		int n ,c;
+		cin>>n>>c;
+		int arr[n];
+		for(int i=0;i<n;i++){
+			cin>>arr[i];
+		}
+		int low =1;
+		int high = arr[n-1]-a[0];
+		while(low<= high){
+			int mid= low+(high-low)/2;
+		  if(cowcanplace(arr,n,c,mid)){  //checking if cows fit on mid dist if yes then we increase the dist or else we decrease it
+				int res = mid;
+				low = mid+1;
+				
+			}
+			else{
+				high = mid-1;
+			}
+		}
