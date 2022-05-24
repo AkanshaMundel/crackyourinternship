@@ -1,0 +1,235 @@
+EASY___________
+Q1  Middle of the Linked List
+CODE
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        if(head == NULL) return NULL;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while (fast!= NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+        }
+    return slow;
+                
+    }
+};
+// TC :0(N ) FOR TRAVERSING ONCE
+//SC:o(1)
+
+
+Q2Linked List Cycle
+CODE
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+//         usinf floyd algo : two pointer tc:o(n)
+        if(head == NULL)
+            return false ;
+       ListNode *first = head;
+        ListNode *secptr = head;
+        while(secptr!= NULL && secptr->next != NULL){
+            first =first ->next;
+            secptr = secptr->next->next;
+            if(first == secptr)
+                return true;  
+        }
+                return false;
+    }
+};
+
+
+
+Q3 Convert Binary Number in a Linked List to Integer
+CODE
+class Solution {
+public:
+    ListNode* reverse(ListNode* head){
+        ListNode* cur= head;
+        ListNode* pre= NULL; ListNode* nxt = NULL;
+        while(cur!= NULL){
+            nxt = cur->next;
+            cur->next =pre;
+            pre= cur;
+            cur = nxt;
+        }
+        head = pre;
+        return head;
+    }
+    
+    int getDecimalValue(ListNode* head) {
+      ListNode* tmp = reverse(head);
+        int total = 0; int i = 0;int x;
+        while(tmp!= NULL){
+           
+            int x = tmp->val;
+            total += (pow(2,i)*x);
+            i++;
+            tmp =tmp->next;
+            
+        }
+    return total;
+    }
+};
+
+
+
+Q4Remove Duplicates from Sorted List
+CODE
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+         ListNode* cur = head;
+        while(cur){
+            while( cur->next && cur->val == cur->next->val){
+                cur->next = cur->next->next;
+                
+            }
+            cur = cur->next;
+        }
+        return head;
+    }
+};
+
+
+
+Q5 Remove Linked List Elements
+CODE
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+         if (head == NULL) {
+            return NULL;
+        }
+        while(head!= NULL && head->val ==val){
+            head = head->next;
+        }
+         ListNode* cur = head;
+         ListNode* pre = NULL;
+        while(cur){
+            if(cur->val == val){
+                pre->next= cur->next;
+            cur= cur->next;
+            }
+            else{
+            pre = cur;
+            cur= cur->next;
+        }
+        }
+        return head;
+    }
+};
+
+
+
+Q6 Reverse Linked List
+CODE 
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* cur = head;
+        ListNode* pre = NULL; 
+        ListNode* nxt = NULL;
+        while(cur){
+            nxt = cur->next;
+            cur->next = pre;
+           pre = cur;
+            cur =nxt;
+        }
+        head = pre;
+        return head;
+    }
+};
+
+
+
+Q7 Merge Two Sorted Lists
+CODE
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if(list1 ==NULL && list2 ==NULL ) return NULL;
+        if(list1 == NULL) return list2;
+        if(list2 ==NULL) return list1;
+             
+        if(list1->val<= list2->val){
+              list1->next = mergeTwoLists( list1->next, list2);  // recrusion 
+                 return list1;
+        }
+          else{
+              list2->next=  mergeTwoLists( list1, list2->next);
+               return list2;
+                                     
+          }
+    }
+};
+
+
+Q8Intersection of Two Linked Lists
+CODE
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *a = headA;
+        ListNode *b = headB;
+        while(a!=b){
+            a = a==NULL ? a = headB : a->next;
+          b = b==NULL ? b = headA : b->next;
+        }
+        return a;
+    }
+};
+// here move dummy a nd b till they reach nd assign their opposit e head once they coliide return a;
+// tc:o(2m )sc(1)
+
+
+
+Q9Palindrome Linked List
+code
+class Solution {
+public:
+     ListNode* reverseList(ListNode* head) {
+        ListNode* cur = head;
+        ListNode* pre = NULL; 
+        ListNode* nxt = NULL;
+        while(cur){
+            nxt = cur->next;
+            cur->next = pre;
+           pre = cur;
+            cur =nxt;
+        }
+        head = pre;
+        return head;
+    }
+    bool isPalindrome(ListNode* head) {
+        if(head == NULL||head->next == NULL) return head;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast->next!=NULL&&fast->next->next!=NULL){
+            slow = slow->next; 
+            fast = fast->next->next;
+        }
+        slow->next = reverseList(slow->next);
+        slow = slow->next;
+        while(slow!=NULL){
+            if(head->val != slow->val)
+               return false;
+            head=head->next;
+            slow= slow->next;
+
+        }
+        return true;
+    }
+};
+// CHECKING THE GIVEN WITH ITS REVERSE LIST but  FIND REVERSE TILL MID VALUE IN REVERSE LIST ND THEN CHECK THEIR VALUES IF SAME 
