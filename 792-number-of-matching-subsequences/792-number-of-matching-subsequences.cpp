@@ -1,29 +1,43 @@
 class Solution {
 public:
-      int numMatchingSubseq(string s, vector<string>& words) {
-        unordered_map <char, vector<int>> mp;
-        for (int i = 0; i < s.size (); i ++) {
-            mp[s[i]].push_back (i);
+    int numMatchingSubseq(string s, vector<string>& words) {
+        unordered_map<char,vector<int>> mp;
+        for(int i = 0;i<s.length();i++){
+            mp[s[i]].push_back(i);
         }
-        int ans = 0;
-        for (auto it : words) {
-            int pos = -1;
-            bool flag = 0;
-            for (int i = 0; i < it.size (); i ++) {
-                auto x = upper_bound (mp[it[i]].begin (), mp[it[i]].end (), pos);
-                if (x != mp[it[i]].end ()) {
-                    int num = x - mp[it[i]].begin ();
-                    pos = mp[it[i]][num];
+        int n=s.size();
+        int count = words.size();
+        int c=0;
+        for(auto w:words){
+            int cur = -1;
+            bool ok = false;
+            for(auto y:w)
+            {
+                int l=-1;
+                int r = mp[y].size();
+                int ind= -1;
+                while(r-l>1)
+                {
+                    int x = l + (r-l)/2;
+                    if(cur < mp[y][x])
+                    {
+                        ind = mp[y][x];
+                        r = x;
+                    }
+                    else l = x;
                 }
-                else {
-                    flag = 1;
+                if(cur < ind)
+                {
+                    cur = ind;
+                }
+                else 
+                {
+                    ok=1;
                     break;
                 }
             }
-            if (flag == 0)
-                ans ++;
+            c += !ok;
         }
-        return ans;
-    }
+        return c;
+ }
 };
-
