@@ -6,7 +6,7 @@ public:
         for (string b : B) {
             tmp = counter(b);
             for (i = 0; i < 26; ++i)
-                count[i] = max(count[i], tmp[i]);
+                count[i] = max(count[i], tmp[i]); //find max in them let see aa eo ao = aaeo would be word 
         }
         vector<string> res;
         for (string a : A) {
@@ -20,7 +20,7 @@ public:
     }
 
     vector<int> counter(string& word) {
-        vector<int> count(26);
+        vector<int> count(26); //ki count particular char in word2 
         for (char c : word) count[c - 'a']++;
         return count;
     }
