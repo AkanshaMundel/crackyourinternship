@@ -1,21 +1,15 @@
 class Solution {
 public:
     int combinationSum4(vector<int>& nums, int target) {
-        vector<int >dp(target+1,-1);
-        return solve(nums,target,nums.size(),dp);
-    }
-    int solve(vector<int>& nums, int target,int n, vector<int >&dp){
-        if(target<0)
-            return 0;
-        if(target == 0)
-            return 1;
-        if (dp[target] != -1)
-            return dp[target];
-        int ans=0;
-        for(int i=0;i<n;i++){
-            ans += solve(nums,target-nums[i],n,dp);
-            
+        vector< unsigned int>dp(target+1,0);
+        dp[0]= 1;
+        for(int i = 1;i<=target;i++){
+            for(auto j :nums){
+                if(j<=i){
+                    dp[i] += dp[i-j];
+                }
+            }
         }
-        return dp[target]=ans;
+          return dp[target];
     }
 };
