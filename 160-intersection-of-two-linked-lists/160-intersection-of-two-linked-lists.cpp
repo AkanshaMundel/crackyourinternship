@@ -9,15 +9,19 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-      if(headA ==NULL||headB== NULL)return NULL;
-        ListNode* a=headA;
-          ListNode* b=headB;
-        while(a!=b){
-            
-    
-        a= a==NULL?headB :a->next;
-        b = b==NULL?headA :b->next;
+        unordered_map<ListNode*,int>mp;
+        while(headA!= NULL){
+            mp[headA]++;
+            headA= headA->next;
         }
-           return a;
+        while(headB!=NULL){
+            if(mp[headB]>0){
+                return headB;
+            }
+                headB= headB->next;
+        }
+        return NULL;
     }
 };
+//USING HASHING ITRATE HEAD2 IN MAP IF VALUE FOUND THEN RETURN THET NODE;
+//SC 0(M)
