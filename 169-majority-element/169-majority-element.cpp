@@ -1,15 +1,20 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-      unordered_map<int ,int>mp;
-        for(auto it  :nums){
-            mp[it]++;
-            if(mp[it]>nums.size()/2){
-                return it;
+        int cnt = 0;
+        int mele=0;
+        for(int i :nums){
+            if(cnt==0){
+                mele = i;
+              
             }
+            if(i==mele){
+                cnt++;
+            }
+            else{cnt--;}
         }
-        return 0;
+        return mele;
     }
 };
-
-//using hash map 0(nlogn)tc 
+//Moore’s Voting Algorithm
+//sc o(N)
