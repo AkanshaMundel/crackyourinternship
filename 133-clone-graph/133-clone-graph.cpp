@@ -21,20 +21,28 @@ public:
 
 class Solution {
 public:
-     unordered_map<Node* ,Node*>mp;
+     Node* dfs(Node* node, unordered_map<Node* ,Node*>&mp){
+         vector<Node*> neighbors;
+         Node* clone = new Node(node->val);
+         mp[node]= clone;// addinh clone eid  its node
+         for(auto it: node->neighbors){
+             if(mp.find(it)!= mp.end()){// arleady clone nd storing in mp
+                 neighbors.push_back(mp[it]); //clone from mp to neigh
+             }
+             else{
+                 neighbors.push_back(dfs(it,mp));
+             }
+         }
+         clone->neighbors= neighbors;
+         return clone;
+         
+     }
     Node* cloneGraph(Node* node) {
-        if(node==NULL){
-            return NULL;}
-    
-        if(mp.find(node)==mp.end()){ //not present
-            mp[node]= new Node(node->val,{});
-            for(auto adj:node->neighbors){ //checkinh its adj if ys then travese same
-                mp[node]->neighbors.push_back(cloneGraph(adj));
-            }
-            
+        unordered_map<Node* ,Node*>mp;
+        if(node==NULL) return NULL;
+        if(node->neighbors.size()==0){
+            Node* clone= new Node(node->val);// if one node present 
         }
-        return mp[node];
-    
+        return dfs(node,mp);
     }
 };
-
