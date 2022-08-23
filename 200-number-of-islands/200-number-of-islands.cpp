@@ -1,34 +1,45 @@
 class Solution {
 public:
-    void dfs(int i ,int j ,vector<vector<char>>& grid){
-      int n = grid.size();
+    void bfs(int row,int col, vector<vector<char>>& grid,vector<vector<int>>&vis){
+        vis[row][col]=1;
+        queue<pair<int,int>>q;
+        q.push({row,col});
+        int n = grid.size();
         int m = grid[0].size();
-        if(i<0 || j<0 ||i>= n || j>=m) return ;
         
-           if(grid[i][j]=='0') return ;
-           grid[i][j]='0' ;//making it zero so tht we cant visit it again 
-        
-            dfs(i-1,j,grid);
-            dfs(i,j-1,grid);
-            dfs(i,j+1,grid);
-            dfs(i+1,j,grid);
-           
+         while(!q.empty()){
+             int row= q.front().first;
+             int col = q.front().second;
+             q.pop();
+             for( int delr = -1;delr<= 1;delr++){ //to traverse the in adj have four diection 
+                 for(int delc = -1;delc<= 1;delc++){
+                     int nrow= row+delr;
+                     int ncol = col+delc;
+                     if(nrow>=0 && nrow<n && ncol >=0 && ncol <m &&  grid[nrow][ncol]=='1'&& !vis[nrow][ncol] && abs(nrow - row) + abs(ncol - col) == 1){ //cheching 
+                        
+                            vis[nrow][ncol]=1;   
+                             q.push({nrow,ncol});  
+                         
+                     }
+                 }
+             }
+         }
     }
-    
     int numIslands(vector<vector<char>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
-        int cnt=0;
-        for(int i = 0;i<n ;i++){
-            for(int j = 0;j<m;j++){
-                if( grid[i][j]=='1'){
-                   
-                    dfs(i,j,grid);
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        int cnt =0;
+        for(int row = 0;row< n; row++){
+            for(int col = 0;col<m; col++){
+                if(!vis[row][col]&&grid[row][col]=='1'){
                     cnt++;
-                    
+                    bfs(row,col,grid,vis);
                 }
+               
             }
         }
         return cnt;
     }
 };
+//BFS
