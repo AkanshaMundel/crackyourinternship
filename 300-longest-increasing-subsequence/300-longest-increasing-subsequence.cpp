@@ -1,15 +1,23 @@
 class Solution {
 public:
+    int fun(int ind,int prev,vector<int> &nums,int n, vector<vector<int>>&dp){
+        if(ind==n){
+            return 0;
+        }
+        if(dp[ind][prev+1]!=-1) return dp[ind][prev+1];
+        int len = 0+ fun(ind+1,prev,nums,n,dp);
+        
+        if(prev==-1||nums[ind]>nums[prev]){
+            len = max(len ,1+fun(ind+1,ind,nums,n,dp));
+        }
+        return dp[ind][prev+1]=len;
+            
+    }
     int lengthOfLIS(vector<int>& nums) {
-        vector<int >li;
-        for(int i=0;i<nums.size();i++){
-            if(li.empty()||li.back()<nums[i]){ //if last ele of lis is samller than add
-                li.push_back(nums[i]);
-                
-            }else{
-                auto it = lower_bound(li.begin(),li.end(),nums[i]); //find just above element of nums[i]
-                *it = nums[i];
-            }
-        }return li.size();
+
+       // recrussion :
+        int n = nums.size();
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        return fun(0,-1,nums,n,dp);
     }
 };
