@@ -1,37 +1,21 @@
 class Solution {
 public:
-//     int fun(int ind,int prev,vector<int> &nums,int n, vector<vector<int>>&dp){
-//         if(ind==n){
-//             return 0;
-//         }
-//         if(dp[ind][prev+1]!=-1) return dp[ind][prev+1];
-//         int len = 0+ fun(ind+1,prev,nums,n,dp);
-        
-//         if(prev==-1||nums[ind]>nums[prev]){
-//             len = max(len ,1+fun(ind+1,ind,nums,n,dp));
-//         }
-//         return dp[ind][prev+1]=len;
-            
-//     }
     int lengthOfLIS(vector<int>& nums) {
-
-//        // recrussion :
-//         int n = nums.size();
-//         vector<vector<int>>dp(n,vector<int>(n+1,-1));
-//         return fun(0,-1,nums,n,dp);
-   // TABULATION
-         int n = nums.size();
-         vector<vector<int>>dp(n+1,vector<int>(n+1,0));
-    
-          for(int ind = n-1;ind>=0;ind--){
-             for( int prev= n-1;prev>=-1;prev--){
-               int len = 0+ dp[ind+1][prev+1];
-             if(prev==-1||nums[ind]>nums[prev]){
-                len = max(len ,1+dp[ind+1][ind+1]);
-                  }
-               dp[ind][prev+1]=len;
-                    }
+        int n = nums.size();
+        vector<int>dp(n,1);
+        int maxi =1;
+        for(int i =0;i<n;i++){
+            for(int j =0 ;j<i;j++){
+                if(nums[i]>nums[j]){
+                    dp[i]= max(dp[i],1+dp[j]);
                 }
-            return dp[0][-1+1];
+            }
+            maxi= max(maxi,dp[i]);
+            
+        }
+        return maxi;
     }
 };
+//here we traverse and use store in dp and if less number present then added with cur dp 
+//sc o(1)
+//tc o(n2)
