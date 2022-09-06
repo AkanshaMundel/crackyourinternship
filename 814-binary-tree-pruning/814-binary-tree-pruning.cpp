@@ -11,21 +11,26 @@
  */
 class Solution {
 public:
-    bool containine(TreeNode* root){
-        if(root ==NULL)return false;
-         bool left = containine(root->left);;
-         bool right = containine(root->right);
-         if(left==NULL) root->left = NULL;
-         if(right==NULL ) root->right = NULL; //SAME AS (!RIGHT)
+//     bool containine(TreeNode* root){
+//         if(root ==NULL)return false;
+//          bool left = containine(root->left);;
+//          bool right = containine(root->right);
+//          if(left==NULL) root->left = NULL;
+//          if(right==NULL ) root->right = NULL; //SAME AS (!RIGHT)
         
-        if(root->val ==1 || left != NULL ||right != NULL ){
-            return true;
-        }
-        return false;
-    }
+//         if(root->val ==1 || left != NULL ||right != NULL ){
+//             return true;
+//         }
+//         return false;
+//     }
     TreeNode* pruneTree(TreeNode* root) {
         //by recrusive 
-        return containine(root)? root:NULL;
+          // return containine(root)? root:NULL;
+        if (root ==NULL) return NULL;
+        root->left = pruneTree(root->left);
+        root->right = pruneTree(root->right);
+        if(root->val ==0&& root->left == NULL && root->right == NULL ) return NULL;
+         return root;
     }
 };
 // tc o(n)
