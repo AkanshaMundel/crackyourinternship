@@ -18,7 +18,7 @@ public:
          if(left==NULL) root->left = NULL;
          if(right==NULL ) root->right = NULL; //SAME AS (!RIGHT)
         
-        if(root->val ==1 || left ||right ){
+        if(root->val ==1 || left != NULL ||right != NULL ){
             return true;
         }
         return false;
